@@ -1,0 +1,71 @@
+---
+title: "My Interactive Leaflet Map"
+output: html_document
+date: "2025-10-08"
+---
+
+title: "My Interactive Leaflet Map"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+<style>
+  body{
+    text-align: justify;
+    font-family: sans-serif;
+  }
+  h1, h2{
+    text-align: center;
+  }
+</style>
+
+# 🗺️ An Interactive Map of Tokyo
+
+This document was created to fulfill the course project requirement. It features an interactive map created with the **Leaflet** package, and the document is automatically dated. The map below displays several famous landmarks in Tokyo, Japan. Click on a marker to see the name of the location!
+
+```{r setup, include=FALSE}
+# This chunk handles the setup, including package installation and loading.
+# The 'include=FALSE' option means this code will run, but won't appear in the final HTML file.
+
+# --- Package Installation ---
+# Note: You only need to run this once. 
+# After the first time, you can comment out the install.packages() line to make your document knit faster.
+if(!require("leaflet")) install.packages("leaflet")
+if(!require("dplyr")) install.packages("dplyr")
+
+# --- Load Libraries ---
+library(leaflet)
+library(dplyr)
+```
+
+## Creating the Interactive Map
+
+```{r create_map, echo=FALSE, message=FALSE, warning=FALSE}
+# The 'echo=FALSE' option means the map will be displayed, but the code to create it will be hidden in the webpage.
+
+# 1. Create a data frame of locations in Tokyo
+locations_df <- data.frame(
+  name = c("Tokyo Tower", "Senso-ji Temple", "Meiji Jingu Shrine", "Shibuya Crossing", "Tokyo Imperial Palace"),
+  lat = c(35.6586, 35.7148, 35.6764, 35.6595, 35.6852),
+  lng = c(139.7454, 139.7967, 139.6993, 139.7005, 139.7528),
+  popup_text = c(
+    "<strong>Tokyo Tower</strong><br>A famous communications and observation tower.",
+    "<strong>Senso-ji Temple</strong><br>An ancient Buddhist temple, and Tokyo's oldest.",
+    "<strong>Meiji Jingu Shrine</strong><br>A Shinto shrine dedicated to Emperor Meiji and his wife.",
+    "<strong>Shibuya Crossing</strong><br>One of the busiest intersections in the world.",
+    "<strong>Tokyo Imperial Palace</strong><br>The primary residence of the Emperor of Japan."
+  )
+)
+
+# 2. Create and display the Leaflet map
+locations_df %>%
+  leaflet() %>%
+  addTiles() %>%  # Adds the default OpenStreetMap base tiles
+  addMarkers(
+    lng = ~lng, 
+    lat = ~lat, 
+    popup = ~popup_text
+  )
+```
+***
